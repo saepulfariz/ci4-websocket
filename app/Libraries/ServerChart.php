@@ -27,16 +27,18 @@ class ServerChart implements MessageComponentInterface
 
         if ($msg == "get_data") {
             // Contoh: setiap kali pesan diterima, kirim data chart baru ke semua client
-            $data = [
-                'labels' => ['A', 'B', 'C', 'D', 'E'],
-                'values' => [
-                    rand(10, 100),
-                    rand(10, 100),
-                    rand(10, 100),
-                    rand(10, 100),
-                    rand(10, 100),
-                ],
-            ];
+            // $data = [
+            //     'labels' => ['A', 'B', 'C', 'D', 'E'],
+            //     'values' => [
+            //         rand(10, 100),
+            //         rand(10, 100),
+            //         rand(10, 100),
+            //         rand(10, 100),
+            //         rand(10, 100),
+            //     ],
+            // ];
+
+            $data = (new \App\Models\ChartModel())->dummyData();
 
             foreach ($this->clients as $client) {
                 $client->send(json_encode($data));
