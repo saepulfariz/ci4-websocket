@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Chat WebSocket CodeIgniter 4</title>
+</head>
+
+<body>
+    <h2>Chat Realtime dengan WebSocket</h2>
+    <div>
+        <label>User ID: <input type="text" id="user_id" value="1"></label><br><br>
+        <textarea id="chat" rows="10" cols="50" readonly></textarea><br><br>
+        <input type="text" id="message" placeholder="Ketik pesan...">
+        <button onclick="sendMessage()">Kirim</button>
+    </div>
+
+    <script>
+        let socket;
+
+        function connect() {
+            const userId = document.getElementById("user_id").value;
+
+            // Sesuaikan port dengan konfigurasi server WebSocket
+            socket = new WebSocket("ws://localhost:8282");
+
+            socket.onopen = function () {
+                console.log("Terhubung ke server WebSocket!");
+                // Kirim data autentikasi
+                socket.send(JSON.stringify({
+                    type: "auth",
+                    user_id: userId
+                }));
+            };
+
+            socket.onmessage = function (event) {
+                const data = JSON.parse(event.data);
+                const chatBox = document.getElementById("chat");
+                chatBox.value += `[${data.from ?? 'Server'}]: ${data.message}\n`;
+            };
+
+            socket.onclose = function () {
+                console.log("Koneksi terputus. Mencoba sambung ulang...");
+                setTimeout(connect, 3000);
+            };
+
+            socket.onerror = function (err) {
+                console.error("Error WebSocket:", err);
+            };
+        }
+
+        function sendMessage() {
+            const msg = document.getElementById("message").value;
+            const userId = document.getElementById("user_id").value;
+            socket.send(JSON.stringify({
+                type: "event",
+                user_id: userId,
+                message: msg
+            }));
+            document.getElementById("message").value = "";
+        }
+
+        connect();
+    </script>
+</body>
+
+</html>
