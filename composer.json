@@ -3,6 +3,8 @@
     "description": "CodeIgniter4 starter app",
     "license": "MIT",
     "type": "project",
+	   "minimum-stability": "dev",
+    "prefer-stable": true,
     "homepage": "https://codeigniter.com",
     "support": {
         "forum": "https://forum.codeigniter.com/",
@@ -11,7 +13,10 @@
     },
     "require": {
         "php": "^8.1",
-        "codeigniter4/framework": "4.6.3",
+        "cboden/ratchet": "^0.4.4",
+        "codeigniter4/framework": "^4.0",
+        "react/http": "^1.11",
+        "react/socket": "^1.16",
         "takielias/codeigniter4-websocket": "^2.0"
     },
     "require-dev": {

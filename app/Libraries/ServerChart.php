@@ -4,14 +4,26 @@ namespace App\Libraries;
 
 use Ratchet\MessageComponentInterface;
 use Ratchet\ConnectionInterface;
+use React\EventLoop\Factory;
+use React\Socket\Server as Reactor;
+use Ratchet\Server\IoServer;
+use Ratchet\WebSocket\WsServer;
 
 class ServerChart implements MessageComponentInterface
 {
     protected $clients;
+    protected $loop;
+
 
     public function __construct()
     {
         $this->clients = new \SplObjectStorage;
+
+        // Menginisialisasi event loop ReactPHP
+        $this->loop = Factory::create();
+
+        // Menjalankan server ReactPHP
+        $this->loop->run();
     }
 
     public function onOpen(ConnectionInterface $conn)
@@ -22,31 +34,28 @@ class ServerChart implements MessageComponentInterface
         // Kirim data pertama kali setelah koneksi terbuka
         $this->sendDataToClient($conn);
 
-        // Jalankan pengiriman data otomatis dalam interval 5 detik
-        // $this->sendDataToAllClientsAtInterval();
+        // Mengatur pengiriman data otomatis setiap 5 detik
+        $this->loop->addPeriodicTimer(2, function () {
+            $this->sendDataToAllClients();
+        });
     }
 
+    // Kirim data ke semua klien
+    private function sendDataToAllClients()
+    {
+        foreach ($this->clients as $client) {
+            $this->sendDataToClient($client);
+        }
+    }
+
+    // Kirim data ke klien tertentu
     private function sendDataToClient(ConnectionInterface $client)
     {
         // Ambil data baru
         $data = (new \App\Models\ChartModel())->dummyData();
 
-        // Kirim data ke client
+        // Kirim data ke klien
         $client->send(json_encode($data));
-    }
-
-    private function sendDataToAllClientsAtInterval()
-    {
-        // Loop dengan sleep untuk interval pengiriman data
-        while (true) {
-            // Kirim data ke semua klien
-            foreach ($this->clients as $client) {
-                $this->sendDataToClient($client);
-            }
-
-            // Tunggu selama 5 detik sebelum mengirimkan data lagi
-            sleep(5);
-        }
     }
 
     public function onMessage(ConnectionInterface $from, $msg)
