@@ -94,7 +94,7 @@
             socket.send('get_data');
         }
 
-        // setInterval(getData, 2000);
+        setInterval(getData, 2000);
     </script>
 </body>
 

@@ -12,7 +12,7 @@ use Ratchet\WebSocket\WsServer;
 class ServerChart implements MessageComponentInterface
 {
     protected $clients;
-    protected $loop;
+    // protected $loop;
 
 
     public function __construct()
@@ -20,10 +20,10 @@ class ServerChart implements MessageComponentInterface
         $this->clients = new \SplObjectStorage;
 
         // Menginisialisasi event loop ReactPHP
-        $this->loop = Factory::create();
+        // $this->loop = Factory::create();
 
         // Menjalankan server ReactPHP
-        $this->loop->run();
+        // $this->loop->run();
     }
 
     public function onOpen(ConnectionInterface $conn)
@@ -32,12 +32,12 @@ class ServerChart implements MessageComponentInterface
         echo "New connection: {$conn->resourceId}\n";
 
         // Kirim data pertama kali setelah koneksi terbuka
-        $this->sendDataToClient($conn);
+        // $this->sendDataToClient($conn);
 
-        // Mengatur pengiriman data otomatis setiap 5 detik
-        $this->loop->addPeriodicTimer(2, function () {
-            $this->sendDataToAllClients();
-        });
+        // // Mengatur pengiriman data otomatis setiap 5 detik
+        // $this->loop->addPeriodicTimer(2, function () {
+        //     $this->sendDataToAllClients();
+        // });
     }
 
     // Kirim data ke semua klien
