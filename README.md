@@ -26,7 +26,6 @@
 
 Then visit http://localhost:8080/websocket/user/1 for client 1 and http://localhost:8080/websocket/user/2 for client 2
 
-
 ## Example Chart websocket
 
 ```bash

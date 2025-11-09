@@ -73,7 +73,7 @@
         socket.onopen = () => {
             console.log('WebSocket connected');
             // bisa trigger pertama kali minta data
-            socket.send('get_data');
+            // socket.send('get_data');
         };
 
         socket.onmessage = (event) => {
@@ -94,7 +94,7 @@
             socket.send('get_data');
         }
 
-        setInterval(getData, 2000);
+        // setInterval(getData, 2000);
     </script>
 </body>
 

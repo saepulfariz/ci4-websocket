@@ -18,6 +18,35 @@ class ServerChart implements MessageComponentInterface
     {
         $this->clients->attach($conn);
         echo "New connection: {$conn->resourceId}\n";
+
+        // Kirim data pertama kali setelah koneksi terbuka
+        $this->sendDataToClient($conn);
+
+        // Jalankan pengiriman data otomatis dalam interval 5 detik
+        // $this->sendDataToAllClientsAtInterval();
+    }
+
+    private function sendDataToClient(ConnectionInterface $client)
+    {
+        // Ambil data baru
+        $data = (new \App\Models\ChartModel())->dummyData();
+
+        // Kirim data ke client
+        $client->send(json_encode($data));
+    }
+
+    private function sendDataToAllClientsAtInterval()
+    {
+        // Loop dengan sleep untuk interval pengiriman data
+        while (true) {
+            // Kirim data ke semua klien
+            foreach ($this->clients as $client) {
+                $this->sendDataToClient($client);
+            }
+
+            // Tunggu selama 5 detik sebelum mengirimkan data lagi
+            sleep(5);
+        }
     }
 
     public function onMessage(ConnectionInterface $from, $msg)
