@@ -73,7 +73,7 @@
         socket.onopen = () => {
             console.log('WebSocket connected');
             // bisa trigger pertama kali minta data
-            // socket.send('get_data');
+            socket.send('get_data');
         };
 
         socket.onmessage = (event) => {
