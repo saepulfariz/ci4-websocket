@@ -48,7 +48,7 @@ class TransactionModel extends Model
     function getChart()
     {
 
-        $charts = $this->select('product, qty')->limit(5)->findAll();
+        $charts = $this->select('product, sum(qty) as qty')->groupBy('product')->limit(5)->findAll();
         $labels = array_column($charts, 'product');
         $values = array_column($charts, 'qty');
         $data = [
