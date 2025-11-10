@@ -82,6 +82,15 @@ class ServerChart implements MessageComponentInterface
                 $client->send(json_encode($data));
             }
         }
+
+        if ($msg == "get_data_db") {
+
+            $data = (new \App\Models\TransactionModel())->getChart();
+
+            foreach ($this->clients as $client) {
+                $client->send(json_encode($data));
+            }
+        }
     }
 
     public function onClose(ConnectionInterface $conn)
