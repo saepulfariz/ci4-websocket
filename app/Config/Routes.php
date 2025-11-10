@@ -16,5 +16,6 @@ $routes->cli('Websocket/start', 'Websocket::start');
 $routes->get('websocket/user/(:any)', 'Websocket::user/$1');
 
 $routes->get('chart', 'Chart::index');
+$routes->get('chart/db', 'Chart::db');
 
 // $routes->setAutoRoute(true);

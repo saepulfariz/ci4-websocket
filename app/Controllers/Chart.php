@@ -25,6 +25,10 @@ class Chart extends Controller
     public function index()
     {
         return view('chart/index');
-        // return view('chart_realtime');
+    }
+
+    public function db()
+    {
+        return view('chart/db');
     }
 }
