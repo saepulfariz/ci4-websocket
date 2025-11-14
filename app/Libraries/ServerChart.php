@@ -85,6 +85,7 @@ class ServerChart implements MessageComponentInterface
 
         if ($msg == "get_data_db") {
 
+            (new \App\Models\TransactionModel())->generateData();
             $data = (new \App\Models\TransactionModel())->getChart();
 
             foreach ($this->clients as $client) {
