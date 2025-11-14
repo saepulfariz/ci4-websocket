@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use CodeIgniter\Model;
+use Faker\Factory as Faker;
 
 class TransactionModel extends Model
 {
@@ -56,5 +57,27 @@ class TransactionModel extends Model
             'values' => $values,
         ];
         return $data;
+    }
+
+    function generateData()
+    {
+        $faker = Faker::create('id_ID');
+
+        $data = [];
+
+        for ($i = 0; $i < 50; $i++) {
+            $data[] = [
+                // 'product'    => $faker->word(),
+                'product' => $faker->randomElement(['Keyboard', 'Mouse', 'Monitor', 'Printer', 'Laptop']),
+                'qty'        => $faker->numberBetween(1, 100),
+                'date'       => $faker->date(),
+                'created_at' => $faker->date('Y-m-d H:i:s'),
+                'updated_at' => $faker->date('Y-m-d H:i:s'),
+                'deleted_at' => null,
+            ];
+        }
+
+        // Insert batch ke tabel transactions
+        db_connect()->table('transactions')->insertBatch($data);
     }
 }
