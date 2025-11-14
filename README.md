@@ -33,3 +33,5 @@ Then visit http://localhost:8080/websocket/user/1 for client 1 and http://localh
 ```
 
 Then visit http://localhost:8080/chart
+
+Then visit for connect database http://localhost:8080/chart/db
